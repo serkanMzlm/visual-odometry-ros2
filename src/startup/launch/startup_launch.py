@@ -14,7 +14,7 @@ startup_path = get_package_share_directory("startup")
 calibrate_world = Path(startup_path, "worlds", "calibration.world")
 config = Path(startup_path, 'config', 'params.yaml')
 
-calibrate_sim = ExecuteProcess(cmd = ["gz", "sim", "-r", "4", calibrate_world])
+calibrate_sim = ExecuteProcess(cmd = ["gz", "sim", "-r", calibrate_world])
 rviz2 = ExecuteProcess(cmd = ["rviz2"])
 
 def generate_launch_description():

@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'save_frame_node = save_frame.save_frame:main',
         ],
     },
 )
