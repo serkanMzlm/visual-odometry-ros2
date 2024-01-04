@@ -12,6 +12,7 @@ install(
   DIRECTORY 
   launch 
   worlds 
+  images
   DESTINATION  
   share/${PROJECT_NAME}/
 )

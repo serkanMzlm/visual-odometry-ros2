@@ -4,6 +4,11 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 
+from os.path import join as Path
+from ament_index_python.packages import get_package_share_directory
+
+startup_path = get_package_share_directory("startup")
+
 class CameraNode(Node):
     def __init__(self):
         super().__init__('camera_node')
@@ -18,15 +23,15 @@ class CameraNode(Node):
                 cv2.imshow("Image", img)
                 k = cv2.waitKey(1)
                 if k == ord('s'):
-                    cv2.imwrite('/home/serkan/images/img' + str(self.i) + '.png', img)
-                    print("image saved!")
+                    # save_file = Path(startup_path, "worlds", "calibration.world")
+                    cv2.imwrite(startup_path + '/images/img' + str(self.i) + '.png', img)
+                    print("image saved!", startup_path)
                     self.i += 1
                 elif k == ord('q'):
                     self.release_camera()
 
     def release_camera(self):
         self.cap.release()
-        cv2.destroyAllWindows()
         print("Camera released and windows closed.")
         rclpy.shutdown()
 
@@ -41,6 +46,7 @@ def main(args=None):
         camera_node.run()
     finally:
         camera_node.release_camera()
+        cv2.destroyAllWindows() 
 
 if __name__ == '__main__':
     main()
