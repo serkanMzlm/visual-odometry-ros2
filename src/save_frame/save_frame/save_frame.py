@@ -1,9 +1,11 @@
-import signal
 import cv2
 import rclpy
 from rclpy.node import Node
 
-from os.path import join as Path
+from cv_bridge import CvBridge
+from sensor_msgs.msg import Image
+from rclpy.qos import qos_profile_sensor_data
+
 from ament_index_python.packages import get_package_share_directory
 
 startup_path = get_package_share_directory("startup")
@@ -12,14 +14,25 @@ class CameraNode(Node):
     def __init__(self):
         super().__init__('camera_node')
         self.declare_parameter('select_input', 'camera')
-        timer_period = 0.1
-        self.timer = self.create_timer(timer_period, self.camera_callback)
         self.select_input = self.get_parameter('select_input').get_parameter_value().string_value
-        self.cap = cv2.VideoCapture(0)
+
+
+        if self.select_input == 'camera':
+            self.cap = cv2.VideoCapture(0)
+            self.timer = self.create_timer(0.05, self.camera_callback)
+        elif self.select_input == 'simulation':
+            self.subscription_ = self.create_subscription(
+                Image, "camera", self.sim_callback, qos_profile_sensor_data
+            )
+            self.br = CvBridge()
+        else:
+            self.get_logger().error('Invalid input mode: %s' % self.select_input)
+            raise SystemExit
+        
+        self.get_logger().debug('Input Mode: %s' %self.select_input)
         self.i = 0
 
     def camera_callback(self):
-        self.get_logger().debug('Input Mode: %s' %self.select_input)
         if self.cap.isOpened():
             ret, img = self.cap.read()
             if ret:
@@ -27,15 +40,28 @@ class CameraNode(Node):
                 k = cv2.waitKey(1)
                 if k == ord('s'):
                     cv2.imwrite(startup_path + '/images/img' + str(self.i) + '.png', img)
-                    self.get_logger().info('image saved: %s' %startup_path)
+                    self.get_logger().info('image saved: img%d' %self.i)
+                    self.get_logger().debug('Save path: %s' %startup_path)
                     self.i += 1
                 elif k == ord('q'):
                     raise SystemExit
-                    self.release_camera()
+
+    def sim_callback(self, data):
+        frame = self.br.imgmsg_to_cv2(data, "bgr8")
+        cv2.imshow("Camera", frame)
+        k = cv2.waitKey(1)
+        if k == ord('s'):
+            cv2.imwrite(startup_path + '/images/img' + str(self.i) + '.png', frame)
+            self.get_logger().info('image saved: img%d' %self.i)
+            self.get_logger().debug('Save path: %s' %startup_path)
+            self.i += 1
+        elif k == ord('q'):
+            raise SystemExit
 
     def release_camera(self):
-        self.get_logger().info('Release camera called.')
-        self.cap.release()
+        if self.select_input == 'camera':
+            self.get_logger().info('Release camera called.')
+            self.cap.release()
 
 
 def main(args=None):
@@ -45,10 +71,11 @@ def main(args=None):
         rclpy.spin(camera_node)
     except SystemExit:
         rclpy.logging.get_logger("Quitting").info('Done')
-    finally:
         camera_node.release_camera()
+
+    finally:
         cv2.destroyAllWindows()
-    rclpy.shutdown()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
