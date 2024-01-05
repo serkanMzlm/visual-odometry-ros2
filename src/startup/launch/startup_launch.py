@@ -21,6 +21,8 @@ save_frame = Node(
     package="save_frame",     
     executable="save_frame_node",
     parameters=[config],
+    # ros_arguments=[ "--log-level", "camera_node:=debug",
+    #             "--remap", "camera_node:=my_command_node"],
     output="screen"
 )
 
