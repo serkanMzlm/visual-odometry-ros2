@@ -16,7 +16,6 @@ class CameraNode(Node):
         self.declare_parameter('select_input', 'camera')
         self.select_input = self.get_parameter('select_input').get_parameter_value().string_value
 
-
         if self.select_input == 'camera':
             self.cap = cv2.VideoCapture(0)
             self.timer = self.create_timer(0.05, self.camera_callback)
@@ -62,7 +61,6 @@ class CameraNode(Node):
         if self.select_input == 'camera':
             self.get_logger().info('Release camera called.')
             self.cap.release()
-
 
 def main(args=None):
     rclpy.init(args=args)
