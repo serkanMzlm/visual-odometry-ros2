@@ -12,12 +12,21 @@ from launch.events import Shutdown
 
 startup_path = get_package_share_directory("startup")
 calibrate_world = Path(startup_path, "worlds", "calibration.world")
-config = Path(startup_path, 'config', 'params.yaml')
+config = Path(startup_path, 'config', 'params.yml')
 
 calibrate_sim = ExecuteProcess(cmd = ["gz", "sim", "-r", calibrate_world])
 rviz2 = ExecuteProcess(cmd = ["rviz2"])
 
+save_frame = Node(
+    package="save_frame",     
+    executable="save_frame_node",
+    parameters=[config],
+    output="screen"
+)
+
 def generate_launch_description():
+    print(config)
     return LaunchDescription([
-        calibrate_sim   
+        # calibrate_sim,
+        save_frame  
     ])

@@ -13,6 +13,7 @@ install(
   launch 
   worlds 
   images
+  config
   DESTINATION  
   share/${PROJECT_NAME}/
 )

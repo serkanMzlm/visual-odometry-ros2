@@ -12,15 +12,18 @@ startup_path = get_package_share_directory("startup")
 class CameraNode(Node):
     def __init__(self):
         super().__init__('camera_node')
+        self.declare_parameter('select_input', 'camera')
         self.cap = cv2.VideoCapture(0)
         self.bridge = CvBridge()
         self.i = 0
 
     def camera_callback(self):
+        my_param = self.get_parameter('select_input').get_parameter_value().string_value
+        print(my_param)
         if self.cap.isOpened():
             ret, img = self.cap.read()
             if ret:
-                cv2.imshow("Image", img)
+                # cv2.imshow("Image", img)
                 k = cv2.waitKey(1)
                 if k == ord('s'):
                     # save_file = Path(startup_path, "worlds", "calibration.world")
