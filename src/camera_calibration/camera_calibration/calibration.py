@@ -8,7 +8,6 @@ from rclpy.node import Node
 
 from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
-from rclpy.qos import qos_profile_sensor_data
 from ament_index_python.packages import get_package_share_directory
 
 startup_path = get_package_share_directory("startup")
@@ -43,13 +42,11 @@ class CalibrationNode(Node):
                 corners2 = cv.cornerSubPix(gray, corners, (11,11), (-1,-1), self.criteria)
                 self.imgpoints.append(corners)
 
-                # Draw and display the corners
                 cv.drawChessboardCorners(img, self.chessboard_size, corners2, ret)
                 cv.imshow('img', img)
                 cv.waitKey(1000)
     def safeData(self):
         ret, cameraMatrix, dist, rvecs, tvecs = cv.calibrateCamera(self.objpoints, self.imgpoints, self.frame_size, None, None)
-        # Save the camera calibration result for later use (we won't worry about rvecs / tvecs)
         pickle.dump((cameraMatrix, dist), open(startup_path + "/calibration_data/calibration.pkl", "wb" ))
         pickle.dump(cameraMatrix, open(startup_path + "/calibration_data/cameraMatrix.pkl", "wb" ))
         pickle.dump(dist, open(startup_path + "/calibration_data/dist.pkl", "wb" ))
