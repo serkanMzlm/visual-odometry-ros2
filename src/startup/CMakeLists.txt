@@ -10,12 +10,13 @@ find_package(rclcpp REQUIRED)
 
 install(
   DIRECTORY 
-  launch 
-  worlds 
-  images
-  config
+    calibration_data
+    config
+    images
+    launch 
+    worlds 
   DESTINATION  
-  share/${PROJECT_NAME}/
+    share/${PROJECT_NAME}/
 )
 
 ament_package()

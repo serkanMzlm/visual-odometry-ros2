@@ -17,9 +17,18 @@ config = Path(startup_path, 'config', 'params.yml')
 calibrate_sim = ExecuteProcess(cmd = ["gz", "sim", "-r", calibrate_world])
 rviz2 = ExecuteProcess(cmd = ["rviz2"])
 
-save_frame = Node(
+save_frame_node = Node(
     package="save_frame",     
     executable="save_frame_node",
+    parameters=[config],
+    # ros_arguments=[ "--log-level", "camera_node:=debug",
+    #             "--remap", "camera_node:=my_command_node"],
+    output="screen"
+)
+
+calibrate_node = Node(
+    package="camera_calibration",     
+    executable="camera_calibration_node",
     parameters=[config],
     # ros_arguments=[ "--log-level", "camera_node:=debug",
     #             "--remap", "camera_node:=my_command_node"],
@@ -30,5 +39,6 @@ def generate_launch_description():
     print(config)
     return LaunchDescription([
         # calibrate_sim,
-        save_frame  
+        # save_frame_node,
+        calibrate_node
     ])
