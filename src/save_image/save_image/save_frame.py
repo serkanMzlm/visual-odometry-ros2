@@ -8,7 +8,7 @@ from rclpy.qos import qos_profile_sensor_data
 
 from ament_index_python.packages import get_package_share_directory
 
-startup_path = get_package_share_directory("startup")
+startup_path = get_package_share_directory("vio_simulation")
 
 class CameraNode(Node):
     def __init__(self):

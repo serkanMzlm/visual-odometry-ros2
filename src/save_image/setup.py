@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'save_frame'
+package_name = 'save_image'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'save_frame_node = save_frame.save_frame:main',
+            'save_image_node = save_image.save_image:main',
         ],
     },
 )
