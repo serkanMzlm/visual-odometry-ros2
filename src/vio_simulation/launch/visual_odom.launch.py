@@ -11,15 +11,39 @@ config = Path(vio_simulation, 'config', 'params.yml')
 sim = ExecuteProcess(cmd = ["gz", "sim", "-r", sim_world])
 rviz2 = ExecuteProcess(cmd = ["rviz2"])
 
+joy_node = Node(
+            package="joy",                                       
+            executable="joy_node",
+            output="screen"
+)
+
+control_node = Node(
+            package="vehicle_control",                                       
+            executable="control_node",
+            output="screen"
+)
+
 camera_bridge = Node(
     package="ros_gz_bridge",     
     executable="parameter_bridge",
     arguments=['/camera@sensor_msgs/msg/Image@gz.msgs.Image']
 )
 
+control_bridge = Node(
+            package="ros_gz_bridge",                                               
+            executable="parameter_bridge",
+            arguments=[
+                "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist"
+            ],
+            output="screen"
+)
+
 def generate_launch_description():
     print(config)
     return LaunchDescription([
+        joy_node,
+        control_node,
         sim,
         camera_bridge,
+        control_bridge,
     ])
