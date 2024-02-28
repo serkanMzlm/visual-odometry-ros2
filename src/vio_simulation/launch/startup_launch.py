@@ -38,7 +38,7 @@ calibrate_node = Node(
 def generate_launch_description():
     print(config)
     return LaunchDescription([
-        # calibrate_sim,
-        # save_frame_node,
+        calibrate_sim,
+        save_frame_node,
         calibrate_node
     ])

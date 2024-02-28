@@ -9,8 +9,8 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 from ament_index_python.packages import get_package_share_directory
 
-startup_path = get_package_share_directory("startup")
-calibration_data_save_path = startup_path + "calibration_data/"
+vio_path = get_package_share_directory("vio_simulation")
+calibration_data_save_path = vio_path + "calibration_data/"
 
 class CalibrationNode(Node):
     def __init__(self):
@@ -34,7 +34,7 @@ class CalibrationNode(Node):
         objpoints = []
         imgpoints = []
 
-        images = glob.glob(get_package_share_directory("startup") + '/images/*.png')
+        images = glob.glob(get_package_share_directory("vio_simulation") + '/images/*.png')
         if not images:
             self.get_logger().warn('No images found in the images folder.')
             raise SystemExit
@@ -61,7 +61,7 @@ class CalibrationNode(Node):
             self.objpoints, self.imgpoints, self.frame_size, None, None
         )
 
-        calibration_path = get_package_share_directory("startup") + "/calibration_data/"
+        calibration_path = get_package_share_directory("vio_simulation") + "/calibration_data/"
         pickle.dump((cameraMatrix, dist), open(calibration_path + "calibration.pkl", "wb"))
         pickle.dump(cameraMatrix, open(calibration_path + "cameraMatrix.pkl", "wb"))
         pickle.dump(dist, open(calibration_path + "dist.pkl", "wb"))

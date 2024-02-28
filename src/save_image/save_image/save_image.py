@@ -8,7 +8,7 @@ from rclpy.qos import qos_profile_sensor_data
 
 from ament_index_python.packages import get_package_share_directory
 
-startup_path = get_package_share_directory("vio_simulation")
+vio_sim_path = get_package_share_directory("vio_simulation")
 
 class CameraNode(Node):
     def __init__(self):
@@ -38,9 +38,9 @@ class CameraNode(Node):
                 cv2.imshow("Image", img)
                 k = cv2.waitKey(1)
                 if k == ord('s'):
-                    cv2.imwrite(startup_path + '/images/img' + str(self.i) + '.png', img)
+                    cv2.imwrite(vio_sim_path + '/images/img' + str(self.i) + '.png', img)
                     self.get_logger().info('image saved: img%d' %self.i)
-                    self.get_logger().debug('Save path: %s' %startup_path)
+                    self.get_logger().debug('Save path: %s' %vio_sim_path)
                     self.i += 1
                 elif k == ord('q'):
                     raise SystemExit
@@ -50,9 +50,9 @@ class CameraNode(Node):
         cv2.imshow("Camera", frame)
         k = cv2.waitKey(1)
         if k == ord('s'):
-            cv2.imwrite(startup_path + '/images/img' + str(self.i) + '.png', frame)
+            cv2.imwrite(vio_sim_path + '/images/img' + str(self.i) + '.png', frame)
             self.get_logger().info('image saved: img%d' %self.i)
-            self.get_logger().debug('Save path: %s' %startup_path)
+            self.get_logger().debug('Save path: %s' %vio_sim_path)
             self.i += 1
         elif k == ord('q'):
             raise SystemExit
