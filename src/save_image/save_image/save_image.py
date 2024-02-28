@@ -17,9 +17,14 @@ class CameraNode(Node):
         self.select_input = self.get_parameter('select_input').get_parameter_value().string_value
 
         if self.select_input == 'camera':
+            self.get_logger().info("camera")
             self.cap = cv2.VideoCapture(0)
             self.timer = self.create_timer(0.05, self.camera_callback)
         elif self.select_input == 'simulation':
+            self.get_logger().info("simulation")
+            self.get_logger().info("s: Saves the image")
+            self.get_logger().info("q: Terminates the program")
+            self.get_logger().info(vio_sim_path)
             self.subscription_ = self.create_subscription(
                 Image, "camera", self.sim_callback, qos_profile_sensor_data
             )

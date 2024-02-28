@@ -17,9 +17,9 @@ config = Path(vio_simulation, 'config', 'params.yml')
 calibrate_sim = ExecuteProcess(cmd = ["gz", "sim", "-r", calibrate_world])
 rviz2 = ExecuteProcess(cmd = ["rviz2"])
 
-save_frame_node = Node(
-    package="save_frame",     
-    executable="save_frame_node",
+save_image_node = Node(
+    package="save_image",     
+    executable="save_image_node",
     parameters=[config],
     # ros_arguments=[ "--log-level", "camera_node:=debug",
     #             "--remap", "camera_node:=my_command_node"],
@@ -35,10 +35,17 @@ calibrate_node = Node(
     output="screen"
 )
 
+camera_bridge = Node(
+    package="ros_gz_bridge",     
+    executable="parameter_bridge",
+    arguments=['/camera@sensor_msgs/msg/Image@gz.msgs.Image']
+)
+
 def generate_launch_description():
     print(config)
     return LaunchDescription([
         calibrate_sim,
-        save_frame_node,
-        calibrate_node
+        camera_bridge,
+        # save_image_node,
+        # calibrate_node
     ])
