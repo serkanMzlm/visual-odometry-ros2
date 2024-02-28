@@ -1,14 +1,14 @@
 from os.path import join as Path
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import ExecuteProcess, IncludeLaunchDescription, SetEnvironmentVariable
+from launch.actions import ExecuteProcess #, IncludeLaunchDescription, SetEnvironmentVariable
 from ament_index_python.packages import get_package_share_directory
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+# from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 # Similasyon kapatılınca programda sonlanması sağlanır.
-from launch.actions import RegisterEventHandler, EmitEvent
-from launch.event_handlers import OnProcessExit
-from launch.events import Shutdown
+# from launch.actions import RegisterEventHandler, EmitEvent
+# from launch.event_handlers import OnProcessExit
+# from launch.events import Shutdown
 
 vio_simulation = get_package_share_directory("vio_simulation")
 calibrate_world = Path(vio_simulation, "worlds", "calibration.world")
@@ -46,6 +46,6 @@ def generate_launch_description():
     return LaunchDescription([
         calibrate_sim,
         camera_bridge,
-        # save_image_node,
+        save_image_node,
         # calibrate_node
     ])

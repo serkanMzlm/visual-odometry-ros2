@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
-    <world name="calibration">
+    <world name= "visual_odometry">
         <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
         <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
         <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
@@ -10,7 +10,6 @@
         <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'>
             <render_engine>ogre2</render_engine>
         </plugin>
-
         <gui fullscreen="0">
             <plugin name='3D View' filename='GzScene3D'>
                 <gz-gui>
@@ -22,12 +21,12 @@
                 <scene>scene</scene>
                 <ambient_light>0.4 0.4 0.4</ambient_light>
                 <background_color>0.8 0.8 0.8</background_color>
-                <camera_pose>0 -5 5 0 0.5 1.57</camera_pose>
+                <camera_pose>-20 -18 30 0 1.0 1.0</camera_pose>
                 <camera_clip>
                     <near>0.25</near>
                     <far>25000</far>
                 </camera_clip>
-                <horizontal_fov>57.29578</horizontal_fov>
+                <!-- <horizontal_fov>57.29578</horizontal_fov> -->
             </plugin>
             <plugin filename="WorldControl" name="World control">
                 <gz-gui>
@@ -121,33 +120,21 @@
             </plugin>
         </gui>
 
-        <include>
-            <pose>0 0 0.2 0 0 0</pose>
-            <uri>model://checkerboard_plane</uri>
-        </include>
 
         <include>
             <pose>0 0 0.075 0 0 0</pose>
             <uri>model://gray_ground</uri>
         </include> 
+        
+        <include>
+            <pose>0 0 0.1 0 0 0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Cave Tunnel Transition Lights</uri>
+        </include>
 
         <include>
-            <pose>0 0 5 0 1.57 0</pose>
-            <uri>model://camera</uri>
-        </include> 
+            <pose>-30.0 0.0 0.2 0.0 0.0 0.0</pose>
+            <uri>model://marble_husky</uri>
+        </include>
 
-        <light type="directional" name="sun">
-            <cast_shadows>false</cast_shadows>
-            <pose>0 0 10 0 0 0</pose>
-            <diffuse>0.8 0.8 0.8 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
-            <attenuation>
-                <range>1000</range>
-                <constant>0.9</constant>
-                <linear>0.01</linear>
-                <quadratic>0.001</quadratic>
-            </attenuation>
-            <direction>-0.5 0.1 -0.9</direction>
-        </light>
     </world>
 </sdf>
