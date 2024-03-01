@@ -9,6 +9,8 @@ sim_world = Path(vio_simulation, "worlds", "visual_odamtry.world")
 config = Path(vio_simulation, 'config', 'params.yml')
 
 sim = ExecuteProcess(cmd = ["gz", "sim", "-r", sim_world])
+sim_server = ExecuteProcess(cmd = ["gz", "sim", "-r", "-s", sim_world])
+
 rviz2 = ExecuteProcess(cmd = ["rviz2"])
 
 joy_node = Node(
@@ -41,9 +43,11 @@ control_bridge = Node(
 def generate_launch_description():
     print(config)
     return LaunchDescription([
+        sim,
+        sim_server,
         joy_node,
         control_node,
-        sim,
+        rviz2,
         camera_bridge,
         control_bridge,
     ])
