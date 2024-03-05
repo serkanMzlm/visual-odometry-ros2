@@ -25,6 +25,13 @@ control_node = Node(
             output="screen"
 )
 
+live_camera = Node(
+    package="live_camera",     
+    executable="live_camera_node",
+    parameters=[config],
+    output="screen"
+)
+
 camera_bridge = Node(
     package="ros_gz_bridge",     
     executable="parameter_bridge",
@@ -43,11 +50,12 @@ control_bridge = Node(
 def generate_launch_description():
     print(config)
     return LaunchDescription([
-        sim,
+        # sim,
+        live_camera,
         sim_server,
         joy_node,
         control_node,
-        rviz2,
+        # rviz2,
         camera_bridge,
         control_bridge,
     ])

@@ -18,7 +18,7 @@ class CalibrationNode(Node):
 
         self.chessboard_size = (7, 7)
         self.frame_size = (720, 720)
-        self.size_of_chessboard_squares_mm = 20
+        self.size_of_chessboard_squares_mm = 250
         self.criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
         self.objp = self.createObjectPoints()
@@ -60,7 +60,7 @@ class CalibrationNode(Node):
         ret, cameraMatrix, dist, rvecs, tvecs = cv.calibrateCamera(
             self.objpoints, self.imgpoints, self.frame_size, None, None
         )
-
+        print(cameraMatrix)
         calibration_path = get_package_share_directory("vio_simulation") + "/calibration_data/"
         pickle.dump((cameraMatrix, dist), open(calibration_path + "calibration.pkl", "wb"))
         pickle.dump(cameraMatrix, open(calibration_path + "cameraMatrix.pkl", "wb"))
@@ -75,3 +75,7 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
+# [[595.09561908   0.         358.812372  ]
+#  [  0.         594.95284846 359.03890707]
+#  [  0.           0.           1.        ]]

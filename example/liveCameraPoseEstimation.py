@@ -23,7 +23,7 @@ class CameraPoses():
         self.K = intrinsic
         self.extrinsic = np.array(((1,0,0,0),(0,1,0,0),(0,0,1,0)))
         self.P = self.K @ self.extrinsic
-        self.orb = cv2.ORB_create(3000)
+        self.orb = cv2.ORB_create(1000)
         FLANN_INDEX_LSH = 6
         index_params = dict(algorithm=FLANN_INDEX_LSH, table_number=6, key_size=12, multi_probe_level=1)
         search_params = dict(checks=50)
@@ -234,12 +234,10 @@ class CameraPoses():
         return [R1, t]
 
 
-
-with open('intrinsicNew.npy', 'rb') as f:
+with open('intrinsic.npy', 'rb') as f:
     intrinsic = np.load(f)
-
-
-skip_frames = 2
+print(intrinsic)
+skip_frames = 1
 data_dir = ''
 vo = CameraPoses(data_dir, skip_frames, intrinsic)
 
@@ -320,9 +318,9 @@ while(cap.isOpened()):
     
     cv2.imshow("img", new_frame)
     
-    #if frame_counter % 20 == 0:
-        #print("FPS: ", fps)
-        #print("Frames: ", frame_counter)
+    # if frame_counter % 20 == 0:
+    #     print("FPS: ", fps)
+    #     print("Frames: ", frame_counter)
     
     # Press Q on keyboard to  exit
     if cv2.waitKey(25) & 0xFF == ord('q'):
@@ -354,7 +352,7 @@ cap.release()
 """
 
 number_of_frames = 20
-image_size = np.array([640, 480])
+image_size = np.array([1024, 720])
 #image_size = np.array([1920, 1080])
 
 plt.figure()
