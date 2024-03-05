@@ -19,6 +19,16 @@ joy_node = Node(
             output="screen"
 )
 
+bridge_keyboard = Node(
+            package="ros_gz_bridge",                                               
+            executable="parameter_bridge",
+            arguments=[
+                "/keyboard/keypress@std_msgs/msg/Int32[gz.msgs.Int32"
+            ],
+            remappings=[("/keyboard/keypress","/keypress")],
+            output="screen"
+          )
+
 control_node = Node(
             package="vehicle_control",                                       
             executable="control_node",
@@ -50,10 +60,11 @@ control_bridge = Node(
 def generate_launch_description():
     print(config)
     return LaunchDescription([
-        # sim,
+        sim,
+        # sim_server,
         live_camera,
-        sim_server,
-        joy_node,
+        # joy_node,
+        bridge_keyboard,
         control_node,
         # rviz2,
         camera_bridge,

@@ -250,7 +250,7 @@ start_rotation = np.identity(3)
 start_pose = np.concatenate((start_rotation, start_translation), axis=1)
 #print("Start pose: ", start_pose)
 
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
 
 # Check if camera opened successfully
 if cap.isOpened() == False:

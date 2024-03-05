@@ -118,6 +118,19 @@
             <plugin filename="ImageDisplay" name="Image display">
                 <topic>/camera</topic>
             </plugin>
+            <plugin filename="KeyPublisher" name="Key publisher">
+                <gz-gui>
+                  <anchors target="3D View">
+                    <line own="right" target="right"/>
+                    <line own="top" target="top"/>
+                  </anchors>
+                  <property key="resizable" type="bool">true</property>
+                  <property key="width" type="double">5</property>
+                  <property key="height" type="double">5</property>
+                  <property key="state" type="string">floating</property>
+                  <property key="showTitleBar" type="bool">false</property>
+                </gz-gui>
+              </plugin>
         </gui>
 
 
