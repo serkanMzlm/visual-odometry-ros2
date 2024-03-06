@@ -62,7 +62,7 @@ def generate_launch_description():
     return LaunchDescription([
         sim,
         # sim_server,
-        live_camera,
+        # live_camera,
         # joy_node,
         bridge_keyboard,
         control_node,

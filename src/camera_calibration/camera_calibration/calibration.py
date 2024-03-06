@@ -15,7 +15,7 @@ calibration_data_save_path = vio_path + "calibration_data/"
 class CalibrationNode(Node):
     def __init__(self):
         super().__init__('calibration_node')
-
+        self.get_logger().info("calibration")
         self.chessboard_size = (7, 7)
         self.frame_size = (720, 720)
         self.size_of_chessboard_squares_mm = 250
@@ -76,6 +76,3 @@ def main(args=None):
 if __name__ == '__main__':
     main()
 
-# [[595.09561908   0.         358.812372  ]
-#  [  0.         594.95284846 359.03890707]
-#  [  0.           0.           1.        ]]

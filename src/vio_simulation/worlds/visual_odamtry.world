@@ -72,7 +72,7 @@
                 <topic>/world/world_demo/stats</topic>
             </plugin>
 
-            <plugin filename="Shapes" name="Shapes">
+            <!-- <plugin filename="Shapes" name="Shapes">
                 <gz-gui>
                     <property key="resizable" type="bool">false</property>
                     <property key="x" type="double">0</property>
@@ -116,8 +116,8 @@
                 </gz-gui>
             </plugin>
             <plugin filename="ImageDisplay" name="Image display">
-                <topic>/camera</topic>
-            </plugin>
+                <topic>/camera</topic> 
+            </plugin>-->
             <plugin filename="KeyPublisher" name="Key publisher">
                 <gz-gui>
                   <anchors target="3D View">
@@ -133,7 +133,6 @@
               </plugin>
         </gui>
 
-
         <include>
             <pose>0 0 0.075 0 0 0</pose>
             <uri>model://gray_ground</uri>
@@ -148,6 +147,5 @@
             <pose>-30.0 0.0 0.2 0.0 0.0 0.0</pose>
             <uri>model://marble_husky</uri>
         </include>
-
     </world>
 </sdf>
