@@ -113,8 +113,6 @@ int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_u
 		}
 	}
 
-	std::cout << "current: " << !features_current.empty() << " prev: " << !features_previous.empty() << std::endl;
-
 	if (!features_current.empty() && !features_previous.empty()) {
 		for (int i = 0; i < updateVector.size(); i++) {
 			//just use active features
@@ -127,7 +125,6 @@ int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_u
 
 		//check if there are active features
 		if (meancount) {
-			std::cout<<"meancount"<<std::endl;
 			pixel_flow_x_mean /= meancount;
 			pixel_flow_y_mean /= meancount;
 
@@ -136,8 +133,7 @@ int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_u
 				if (updateVector[i] == 1) {
 					pixel_flow_x_stddev += pow(features_current[i].x - features_previous[i].x - pixel_flow_x_mean, 2);
 					pixel_flow_y_stddev += pow(features_current[i].y - features_previous[i].y - pixel_flow_y_mean, 2);
-
-					std::cout << "flow  x: " << pixel_flow_x_stddev << "flow y: " <<  pixel_flow_y_stddev << std::endl;
+					// std::cout << "flow  x: " << pixel_flow_x_stddev << "flow y: " <<  pixel_flow_y_stddev << std::endl;
 				}
 			}
 

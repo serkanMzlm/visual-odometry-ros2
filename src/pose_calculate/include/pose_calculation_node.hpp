@@ -27,8 +27,12 @@ public:
     void cameraCallback(const imageMsg::SharedPtr msg);
     void cameraInfoCallback(const cameraInfoMsg::SharedPtr msg);
 private:
-    uint8_t  image[4096];
+    bool enable_display = false;
+    uint8_t  image[IMAGE_SIZE];
     uint32_t frame_time = 0;
+
+    float sum_x = 0.0f;
+    float sum_y = 0.0f;
 
     OpticalFlowOpenCV* optical_flow;
     cv_bridge::CvImagePtr cv_ptr;

@@ -41,13 +41,23 @@ void PoseCalculationNode::cameraCallback(const imageMsg::SharedPtr msg){
     int quality = optical_flow->calcFlow((uint8_t *)image, frame_time_us, 
                                                 dt_us, flow_x_ang, flow_y_ang);
     
-    cv::Mat image(height, width, CV_8UC(channels), const_cast<uint8_t*>(img_ptr));
-    cv::imshow("Image", image);
-    cv::waitKey(1); 
+    if(enable_display){
+        cv::Mat image(height, width, CV_8UC(channels), const_cast<uint8_t*>(img_ptr));
+        cv::imshow("Image", image);
+        cv::waitKey(1); 
+    }
 
     twistMsg pos_msg;
-    pos_msg.linear.x = -flow_y_ang * 10.0f;
-    pos_msg.linear.y = -flow_x_ang * 10.0f;
+
+    sum_x += (abs(flow_x_ang) > OFFSET ? flow_x_ang : 0.0f);
+    sum_y += (abs(flow_y_ang) > OFFSET ? flow_y_ang : 0.0f);
+
+    pos_msg.linear.x = flow_x_ang;
+    pos_msg.linear.y = flow_y_ang;
+
+    pos_msg.angular.x = sum_x;
+    pos_msg.angular.y = sum_y;
+
     pos_pub->publish(pos_msg);
 }
 
@@ -72,13 +82,13 @@ void PoseCalculationNode::setup(){
 }
 
 void PoseCalculationNode::initData(){
-    cam_info.width = 64;
-    cam_info.height = 64;
+    cam_info.width = 720;
+    cam_info.height = 720;
     cam_info.depth = 0;
-    cam_info.format = "L8";
+    cam_info.format = "R8G8B8";
     cam_info.hfov = 0.088; 
     cam_info.focal_length = (cam_info.width / 2) / tan(cam_info.hfov / 2);
-    cam_info.output_rate = -20;
+    cam_info.output_rate = 20;
     
     optical_flow = new OpticalFlowOpenCV(cam_info.focal_length,
                                          cam_info.focal_length,

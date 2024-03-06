@@ -3,6 +3,10 @@
 
 #include <string>
 
+#define OFFSET 0.01f
+#define  IMAGE_SIZE 518400 // 720 * 720
+// #define  IMAGE_SIZE 4096   // 64 * 64
+
 typedef struct {
     unsigned int width;
     unsigned int height;
