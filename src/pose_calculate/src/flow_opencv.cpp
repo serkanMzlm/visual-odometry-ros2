@@ -44,9 +44,8 @@
  * OpenCV optical flow calculation
  ****************************************************************************/
 
-OpticalFlowOpenCV::OpticalFlowOpenCV(float f_length_x, float f_length_y, int ouput_rate, int img_width, int img_height,
-				     int num_feat,
-				     float conf_multi) :
+OpticalFlowOpenCV::OpticalFlowOpenCV(float f_length_x, float f_length_y, int ouput_rate, 
+										int img_width, int img_height, int num_feat, float conf_multi) :
 	num_features(num_feat),
 	confidence_multiplier(conf_multi)
 {
@@ -70,27 +69,22 @@ OpticalFlowOpenCV::~OpticalFlowOpenCV(void)
 }
 
 void OpticalFlowOpenCV::setCameraMatrix(float focal_len_x, float focal_len_y,
-					float principal_point_x, float principal_point_y)
-{
+								float principal_point_x, float principal_point_y){
 	camera_matrix <<   focal_len_x, 0.0f, principal_point_x,
-		      0.0f, focal_len_y, principal_point_y,
-		      0.0f, 0.0f, 1.0f;
-
+		      		   0.0f, focal_len_y, principal_point_y,
+		      		   0.0f, 0.0f, 1.0f;
 	set_camera_matrix = true;
 }
 
-void OpticalFlowOpenCV::setCameraDistortion(float k1, float k2, float k3, float p1, float p2)
-{
+void OpticalFlowOpenCV::setCameraDistortion(float k1, float k2, float k3, float p1, float p2){
 	camera_distortion <<   k1, k2, p1, p2, k3;
-
 	set_camera_distortion = true;
 }
 
-int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_us, int &dt_us,
-				float &flow_x, float &flow_y)
-{
-	std::cout<<"calcFlow"<<std::endl;
+int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_us, 
+											int &dt_us, float &flow_x, float &flow_y){
 	if (updateVector.empty()) {
+		std::cout << "empty\n";
 		updateVector.resize(num_features, 2);
 	}
 
@@ -106,11 +100,11 @@ int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_u
 	trackFeatures(frame_gray, frame_gray, features_current, useless, updateVector, 0);
 
 	if (set_camera_matrix && set_camera_distortion) {
-		std::cout<<"set_camera_matrix"<<std::endl;
 		features_tmp = features_current;
 		cv::undistortPoints(features_tmp, features_current, camera_matrix, camera_distortion);
 
 		// cv::undistortPoints returns normalized coordinates... -> convert
+		std::cout<< num_features <<std::endl;
 		for (int i = 0; i < num_features; i++) {
 			features_current[i].x = features_current[i].x * camera_matrix(0, 0) +
 						camera_matrix(0, 2);
@@ -119,9 +113,9 @@ int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_u
 		}
 	}
 
+	std::cout << "current: " << !features_current.empty() << " prev: " << !features_previous.empty() << std::endl;
+
 	if (!features_current.empty() && !features_previous.empty()) {
-		//calculate pixel flow
-		std::cout<<"calculate pixel flow"<<std::endl;
 		for (int i = 0; i < updateVector.size(); i++) {
 			//just use active features
 			if (updateVector[i] == 1) {
@@ -142,6 +136,8 @@ int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_u
 				if (updateVector[i] == 1) {
 					pixel_flow_x_stddev += pow(features_current[i].x - features_previous[i].x - pixel_flow_x_mean, 2);
 					pixel_flow_y_stddev += pow(features_current[i].y - features_previous[i].y - pixel_flow_y_mean, 2);
+
+					std::cout << "flow  x: " << pixel_flow_x_stddev << "flow y: " <<  pixel_flow_y_stddev << std::endl;
 				}
 			}
 
@@ -203,7 +199,6 @@ int OpticalFlowOpenCV::calcFlow(uint8_t *img_current, const uint32_t &img_time_u
 	flow_y = pixel_flow_y_mean;
 
 	int flow_quality = round(255.0 * meancount / updateVector.size());
-	std::cout<<"flow_quality:"<<flow_quality<<std::endl;
 	flow_quality = limitRate(flow_quality, img_time_us, &dt_us, &flow_x, &flow_y);
 
 	//flow_x = atan2(flow_x, focal_length_x); //convert pixel flow to angular flow

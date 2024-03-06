@@ -22,7 +22,7 @@ class PoseCalculationNode: public rclcpp::Node{
 public:
     PoseCalculationNode();
 private:
-    uint8_t  image[4096];
+    uint8_t  image[518400];
     uint32_t frame_time;
 
     OpticalFlowOpenCV* optical_flow;

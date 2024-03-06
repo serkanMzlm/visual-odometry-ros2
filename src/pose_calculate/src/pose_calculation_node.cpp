@@ -69,8 +69,8 @@ void PoseCalculationNode::setup(){
 }
 
 void PoseCalculationNode::initData(){
-    cam_info.width = 64;
-    cam_info.height = 64;
+    cam_info.width = 720;
+    cam_info.height = 720;
     cam_info.depth = 0;
     cam_info.format = "L8";
     cam_info.hfov = 0.088; 

@@ -1,5 +1,8 @@
 #include "control_node.hpp"
 
+#define LINEAR_X  3.0f
+#define ANGULAR_Z 1.0f
+
 #define OFFSET(X) ((X < 0.1) && (X > -0.1) ? 0.0: X)
 
 ControlNode::ControlNode(): Node("control_node"){
@@ -28,22 +31,22 @@ void ControlNode::keyboardCallback(const int32Msg::SharedPtr msg){
     switch(msg->data){
       case KEYCODE_W:
         RCLCPP_DEBUG(this->get_logger(), "UP");
-        pub_data.linear.x = 1.0;
+        pub_data.linear.x = LINEAR_X;
         break;
       case KEYCODE_A:
         RCLCPP_DEBUG(this->get_logger(), "LEFT");
-        pub_data.angular.z = 0.5;
+        pub_data.angular.z = ANGULAR_Z;
         break;
       case KEYCODE_S:
         RCLCPP_DEBUG(this->get_logger(), "STOP");
         break;
       case KEYCODE_D:
         RCLCPP_DEBUG(this->get_logger(), "RIGHT");
-        pub_data.angular.z = -0.5;
+        pub_data.angular.z = -ANGULAR_Z;
         break;
       case KEYCODE_X:
         RCLCPP_DEBUG(this->get_logger(), "DOWN");
-        pub_data.linear.x = -1.0;
+        pub_data.linear.x = -LINEAR_X;
         break;
       default:
         RCLCPP_DEBUG(this->get_logger(), "None: %x", msg->data);

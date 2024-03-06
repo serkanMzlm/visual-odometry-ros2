@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(optical_flow)
+project(pose_calculate)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -20,9 +20,10 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 file(GLOB_RECURSE SRC_FILE ${CMAKE_SOURCE_DIR}/*.cpp)
 
-add_executable(optical_flow_node ${SRC_FILE})
+add_executable(pose_calculate_node ${SRC_FILE})
+
 ament_target_dependencies(
-  optical_flow_node
+  pose_calculate_node
   geometry_msgs
   rclcpp
   std_msgs
@@ -33,8 +34,8 @@ ament_target_dependencies(
 )
 
 install(
-  TARGETS optical_flow_node
-  DESTINATION share/${PROJECT_NAME}
+  TARGETS pose_calculate_node
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()

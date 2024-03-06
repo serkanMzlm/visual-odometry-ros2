@@ -11,7 +11,6 @@ void OpticalFlow::initLimitRate(){
 
 int OpticalFlow::limitRate(int flow_quality, const uint32_t frame_time_us, 
                                     int *dt_us, float *flow_x, float *flow_y){
-	std::cout<<"LimitRate"<<std::endl;
 	static uint32_t time_last_pub = 0;
 
 	if (output_rate <= 0) { 
@@ -28,10 +27,7 @@ int OpticalFlow::limitRate(int flow_quality, const uint32_t frame_time_us,
 	}
 
 	if ((frame_time_us - time_last_pub) > (1.0e6f / output_rate)) {
-		std::cout<<"LimitRate if"<<std::endl;
-
 		int average_flow_quality = 0;
-
 		if (valid_frame_count > 0) {
 			average_flow_quality = std::floor(sum_flow_quality / valid_frame_count);
 		}
