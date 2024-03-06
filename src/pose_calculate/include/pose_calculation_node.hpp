@@ -21,9 +21,14 @@ using twistMsg = geometry_msgs::msg::Twist;
 class PoseCalculationNode: public rclcpp::Node{
 public:
     PoseCalculationNode();
+
+    void setup();
+    void initData();
+    void cameraCallback(const imageMsg::SharedPtr msg);
+    void cameraInfoCallback(const cameraInfoMsg::SharedPtr msg);
 private:
-    uint8_t  image[518400];
-    uint32_t frame_time;
+    uint8_t  image[4096];
+    uint32_t frame_time = 0;
 
     OpticalFlowOpenCV* optical_flow;
     cv_bridge::CvImagePtr cv_ptr;
@@ -33,11 +38,6 @@ private:
     rclcpp::Subscription<cameraInfoMsg>::SharedPtr camera_info_sub;
     rclcpp::Publisher<twistMsg>::SharedPtr pos_pub;
     rclcpp::TimerBase::SharedPtr timer_;
-private:
-    void setup();
-    void initData();
-    void cameraCallback(const imageMsg::SharedPtr msg);
-    void cameraInfoCallback(const cameraInfoMsg::SharedPtr msg);
 };
 
 #endif
