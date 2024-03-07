@@ -10,8 +10,9 @@
 #include "sensor_msgs/msg/image.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 
-#include "pose_calculation_node_type.hpp"
+#include "filter.hpp"
 #include "flow_opencv.hpp"
+#include "pose_calculation_node_type.hpp"
 
 
 using cameraInfoMsg = sensor_msgs::msg::CameraInfo;
@@ -33,6 +34,7 @@ private:
 
     float sum_x = 0.0f;
     float sum_y = 0.0f;
+    int counter = 0;
 
     OpticalFlowOpenCV* optical_flow;
     cv_bridge::CvImagePtr cv_ptr;

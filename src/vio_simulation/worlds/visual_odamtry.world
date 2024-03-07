@@ -118,6 +118,8 @@
             <plugin filename="ImageDisplay" name="Image display">
                 <topic>/camera</topic> 
             </plugin>-->
+            <plugin filename="Teleop" name="Teleop"/>
+    
             <plugin filename="KeyPublisher" name="Key publisher">
                 <gz-gui>
                   <anchors target="3D View">

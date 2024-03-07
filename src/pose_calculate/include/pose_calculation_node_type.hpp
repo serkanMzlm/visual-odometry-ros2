@@ -4,6 +4,9 @@
 #include <string>
 
 #define OFFSET 0.01f
+#define MIN_VELOCITY -50.0f
+#define MAX_VELOCITY 50.0f
+
 #define  IMAGE_SIZE 518400 // 720 * 720
 // #define  IMAGE_SIZE 4096   // 64 * 64
 

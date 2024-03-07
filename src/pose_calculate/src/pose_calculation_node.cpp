@@ -48,17 +48,19 @@ void PoseCalculationNode::cameraCallback(const imageMsg::SharedPtr msg){
     }
 
     twistMsg pos_msg;
+    if(counter > 10){
+        pos_msg.linear.x = constrain(flow_x_ang, MIN_VELOCITY, MAX_VELOCITY);
+        pos_msg.linear.y = constrain(flow_y_ang, MIN_VELOCITY, MAX_VELOCITY);
 
-    sum_x += (abs(flow_x_ang) > OFFSET ? flow_x_ang : 0.0f);
-    sum_y += (abs(flow_y_ang) > OFFSET ? flow_y_ang : 0.0f);
+        sum_x += (abs(pos_msg.linear.x) > OFFSET ? pos_msg.linear.x : 0.0f);
+        sum_y += (abs(pos_msg.linear.y) > OFFSET ? pos_msg.linear.y : 0.0f);
 
-    pos_msg.linear.x = flow_x_ang;
-    pos_msg.linear.y = flow_y_ang;
+        pos_msg.angular.x = sum_x;
+        pos_msg.angular.y = sum_y;
 
-    pos_msg.angular.x = sum_x;
-    pos_msg.angular.y = sum_y;
-
-    pos_pub->publish(pos_msg);
+        pos_pub->publish(pos_msg);
+    }
+    counter++;
 }
 
 void PoseCalculationNode::cameraInfoCallback(const cameraInfoMsg::SharedPtr msg){

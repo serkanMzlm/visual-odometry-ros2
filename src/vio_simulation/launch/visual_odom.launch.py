@@ -71,7 +71,7 @@ def generate_launch_description():
         # sim_server,
         # live_camera,
         # joy_node,
-        control_node,
+        # control_node,
         keyboard_bridge,
         camera_bridge,
         camera_info_bridge,

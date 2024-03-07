@@ -1,6 +1,6 @@
 #include "control_node.hpp"
 
-#define LINEAR_X  3.0f
+#define LINEAR_X  5.0f
 #define ANGULAR_Z 1.0f
 
 #define OFFSET(X) ((X < 0.1) && (X > -0.1) ? 0.0: X)
