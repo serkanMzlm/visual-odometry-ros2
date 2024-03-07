@@ -10,7 +10,7 @@
 #include "sensor_msgs/msg/image.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 
-#include "filter.hpp"
+#include "filter_data.hpp"
 #include "flow_opencv.hpp"
 #include "pose_calculation_node_type.hpp"
 
@@ -29,11 +29,13 @@ public:
     void cameraInfoCallback(const cameraInfoMsg::SharedPtr msg);
 private:
     bool enable_display = false;
+
     uint8_t  image[IMAGE_SIZE];
     uint32_t frame_time = 0;
 
     float sum_x = 0.0f;
     float sum_y = 0.0f;
+    LinearKalman kalman[2];
     int counter = 0;
 
     OpticalFlowOpenCV* optical_flow;

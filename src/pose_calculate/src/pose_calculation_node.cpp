@@ -49,8 +49,8 @@ void PoseCalculationNode::cameraCallback(const imageMsg::SharedPtr msg){
 
     twistMsg pos_msg;
     if(counter > 10){
-        pos_msg.linear.x = constrain(flow_x_ang, MIN_VELOCITY, MAX_VELOCITY);
-        pos_msg.linear.y = constrain(flow_y_ang, MIN_VELOCITY, MAX_VELOCITY);
+        pos_msg.linear.x = kalman[0].filter(constrain(flow_x_ang, MIN_VELOCITY, MAX_VELOCITY));
+        pos_msg.linear.y = kalman[1].filter(constrain(flow_y_ang, MIN_VELOCITY, MAX_VELOCITY));
 
         sum_x += (abs(pos_msg.linear.x) > OFFSET ? pos_msg.linear.x : 0.0f);
         sum_y += (abs(pos_msg.linear.y) > OFFSET ? pos_msg.linear.y : 0.0f);

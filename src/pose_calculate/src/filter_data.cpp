@@ -16,15 +16,14 @@ LinearKalman::LinearKalman(float Q, float R) :
 }
 
 float LinearKalman::filter(float measurement){
-	// Credict step
 	float new_covariance = previous_covariance + process_noise;
 
 	// Calculate Kalman gain
-	float kalman_gain = new_covariance / (new_covariance + measurement_noise);
+	float gain = new_covariance / (new_covariance + measurement_noise);
 
 	// Update step
-	previous_estimate = previous_covariance + kalman_gain + (measurement - previous_estimate);
-	previous_covariance = (1 - kalman_gain) * new_covariance;
-	
+	previous_estimate = previous_estimate + gain * (measurement - previous_estimate);
+	previous_covariance = (1 - gain) * previous_covariance;
+
 	return previous_estimate;
 }

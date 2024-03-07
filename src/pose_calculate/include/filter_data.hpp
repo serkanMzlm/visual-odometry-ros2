@@ -15,7 +15,7 @@ private:
     float previous_covariance = 0.0f;
     float previous_estimate   = 0.0f;
 public:
-    LinearKalman(float Q, float R);
+    LinearKalman(float Q = 0.1f, float R = 0.9f);
     float filter(float measurement);
 };
 
