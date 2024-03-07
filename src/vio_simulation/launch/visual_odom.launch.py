@@ -63,6 +63,25 @@ keyboard_bridge = Node(
             output="screen"
 )
 
+odom_bridge =  Node(
+        package = 'ros_gz_bridge',
+        executable = 'parameter_bridge',
+        arguments=['/model/rovercopter/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry'],
+)
+
+altimeter_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=['/bridge_altitude_topic@std_msgs/msg/Float32@gz.msgs.Float'],
+        remappings=[('/bridge_altitude_topic', '/barometer_height')],
+)
+
+imu_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=['/imu@sensor_msgs/msg/Imu@gz.msgs.IMU'],
+)
+
 def generate_launch_description():
     print(config)
     return LaunchDescription([
@@ -76,4 +95,5 @@ def generate_launch_description():
         camera_bridge,
         camera_info_bridge,
         control_bridge,
+        imu_bridge,
     ])
